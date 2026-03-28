@@ -2,17 +2,18 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
-# Память сервера: True - работает, False - выключено
+# Память сервера для кнопки: True - включено, False - выключено
 app_config = {"orders_enabled": True}
 orders = []
 
 @app.route('/')
 def index():
+    # Если ты выключил заказы в админке, люди увидят это сообщение:
     if not app_config["orders_enabled"]:
-        return "<h1 style='text-align:center; padding-top:50px;'>Дякуємо! Караоке закінчено. До зустрічі!</h1>", 200
+        return "<h1 style='text-align:center; padding-top:50px; font-family:sans-serif;'>Дякуємо! Караоке закінчено. До зустрічі!</h1>", 200
     
-    # Твой список песен (можешь менять названия здесь)
-    songs_db = ["The Carpathian Mantra", "Modern Techno Mix", "Ukrainian Folk Remix"]
+    # Твой актуальный список песен:
+    songs_db = ["The Carpathian Mantra", "Modern Techno Mix", "Ukrainian Folk Remix", "DjRAZME Special"]
     return render_template('index.html', songs=songs_db)
 
 @app.route('/order', methods=['POST'])
@@ -29,10 +30,12 @@ def order():
 
 @app.route('/admin_panel')
 def admin():
+    # Передаем список заказов и статус кнопки в твой пульт управления
     return render_template('admin.html', orders=orders, enabled=app_config["orders_enabled"])
 
 @app.route('/toggle_orders', methods=['POST'])
 def toggle():
+    # Эта функция меняет статус True на False и наоборот при нажатии кнопки
     app_config["orders_enabled"] = not app_config["orders_enabled"]
     return jsonify({"status": "success", "enabled": app_config["orders_enabled"]})
 
