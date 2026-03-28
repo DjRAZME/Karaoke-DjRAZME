@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DjRAZME Karaoke</title>
+    <style>
+        body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
+        h1 { color: #ff4b2b; letter-spacing: 2px; }
+        .song-btn { background: #ff4b2b; border: none; color: white; padding: 15px; width: 100%; margin: 10px 0; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🎤 DjRAZME</h1>
+    <p>Нажми на трек, чтобы заказать:</p>
+    <button class="song-btn" onclick="send('The Carpathian Mantra')">The Carpathian Mantra</button>
+    <button class="song-btn" onclick="send('Modern Techno Mix')">Modern Techno Mix</button>
+    <button class="song-btn" onclick="send('Ukrainian Folk Remix')">Ukrainian Folk Remix</button>
+    <script>
+        function send(name) {
+            fetch('/order', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({song: name})
+            }).then(() => alert('Заказ на ' + name + ' отправлен!'));
+        }
+    </script>
+</body>
+</html>
